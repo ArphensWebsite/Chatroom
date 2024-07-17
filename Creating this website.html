@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-User Chat</title>
+<style>
+    /* Basic styling for demonstration purposes */
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+    }
+    .chat-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .message {
+        background-color: #f0f0f0;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+    .message .user {
+        font-weight: bold;
+    }
+    .message .time {
+        font-size: 0.8em;
+        color: #999;
+    }
+    .chat-input {
+        display: flex;
+        margin-top: 10px;
+    }
+    .chat-input input[type="text"] {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+    .chat-input button {
+        padding: 8px 15px;
+        margin-left: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div id="chat-messages">
+        <!-- Messages will be dynamically added here -->
+    </div>
+    <div class="chat-input">
+        <input type="text" id="messageInput" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    function sendMessage() {
+        var messageInput = document.getElementById('messageInput');
+        var message = messageInput.value.trim();
+
+        if (message !== '') {
+            var currentDate = new Date();
+            var hours = currentDate.getHours();
+            var minutes = currentDate.getMinutes();
+            var timeString = hours + ':' + (minutes < 10 ? '0' + minutes : minutes);
+
+            var messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.innerHTML = '<span class="user">You</span>: ' + message + '<span class="time">' + timeString + '</span>';
+
+            document.getElementById('chat-messages').appendChild(messageElement);
+
+            // Clear the input field
+            messageInput.value = '';
+        }
+    }
+</script>
+
+</body>
+</html>
