@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .chat-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #message-container {
+            max-height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="text"], button {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: calc(100% - 22px);
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .message {
+            margin-bottom: 5px;
+            padding: 5px 10px;
+            background-color: #f2f2f2;
+            border-radius: 4px;
+        }
+
+        .message strong {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div id="message-container"></div>
+        <input type="text" id="username-input" placeholder="Enter your username">
+        <input type="text" id="message-input" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            var username = document.getElementById("username-input").value.trim();
+            var message = document.getElementById("message-input").value.trim();
+
+            if (username === "" || message === "") {
+                alert("Please enter both username and message.");
+                return;
+            }
+
+            var messageContainer = document.getElementById("message-container");
+
+            // Create message element
+            var messageElement = document.createElement("div");
+            messageElement.classList.add("message");
+            messageElement.innerHTML = "<strong>" + username + ":</strong> " + message;
+
+            // Add message to message container
+            messageContainer.appendChild(messageElement);
+
+            // Clear message input
+            document.getElementById("message-input").value = "";
+
+            // Ensure message container scrolls to bottom
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+
+            // Store message in local storage or database for persistence (not implemented here)
+            // Example: localStorage.setItem("chatMessages", JSON.stringify(chatMessages));
+        }
+    </script>
+</body>
+</html>
