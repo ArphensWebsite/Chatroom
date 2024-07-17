@@ -69,7 +69,25 @@
         <button onclick="sendMessage()">Send</button>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-database-compat.js"></script>
     <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            databaseURL: "YOUR_DATABASE_URL",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the database service
+        const database = firebase.database();
+
+        // Function to send a message
         function sendMessage() {
             var username = document.getElementById("username-input").value.trim();
             var message = document.getElementById("message-input").value.trim();
@@ -79,25 +97,34 @@
                 return;
             }
 
+            // Push message to Firebase
+            database.ref('messages').push({
+                username: username,
+                message: message,
+                timestamp: Date.now()
+            });
+
+            // Clear message input
+            document.getElementById("message-input").value = "";
+        }
+
+        // Function to display messages
+        database.ref('messages').on('child_added', function(snapshot) {
+            var message = snapshot.val();
             var messageContainer = document.getElementById("message-container");
 
             // Create message element
             var messageElement = document.createElement("div");
             messageElement.classList.add("message");
-            messageElement.innerHTML = "<strong>" + username + ":</strong> " + message;
+            messageElement.innerHTML = "<strong>" + message.username + ":</strong> " + message.message;
 
             // Add message to message container
             messageContainer.appendChild(messageElement);
 
-            // Clear message input
-            document.getElementById("message-input").value = "";
-
             // Ensure message container scrolls to bottom
             messageContainer.scrollTop = messageContainer.scrollHeight;
-
-            // Store message in local storage or database for persistence (not implemented here)
-            // Example: localStorage.setItem("chatMessages", JSON.stringify(chatMessages));
-        }
+        });
     </script>
 </body>
 </html>
+
